@@ -1,0 +1,9 @@
+<h3><?= $title; ?></h3>
+<form method="post" enctype="multipart/form-data" action="/www/user/register" style="margin-top: 20px;">
+    <label>Username:</label> <input type="text" name="name" value="<?= $name; ?>" style="display: block; width: 300px; margin-bottom: 10px;">
+    <label>Email as Login:</label> <input type="text" name="email" value="<?= $email; ?>" style="display: block; width: 300px; margin-bottom: 10px;">
+    <label>Birthday:</label> <input type="text" name="birthday" placeholder="DD.MM.YYYY" value="<?= $birthday; ?>" style="display: block; width: 300px; margin-bottom: 10px;">
+    <label>Password:</label> <input type="password" name="password" value="<?= $password; ?>" style="display: block; width: 300px; margin-bottom: 10px;">
+    <label>Confirm Password:</label> <input type="password" name="password2" value="<?= $password2; ?>" style="display: block; width: 300px; margin-bottom: 10px;">
+    <input type="submit" value="Register"><input type="button" onclick="window.location.href='/www/user/login'" style="margin-left: 10px; width: 70px;" value="Back">
+</form>

@@ -1,0 +1,16 @@
+<h3><?= $title; ?></h3>
+<table border="0">
+    <tr>
+        <td><img src="<?= $avatar; ?>" ></td>
+        <td>
+            <label>Username: </label><span><?= $username; ?></span><br>
+            <label>Day of birth: </label><span><?= (\DateTime::createFromFormat('Y-m-d', $birthday))->format('d.m.Y'); ?></span><br>
+            <label>Email: </label><span><?= $email; ?></span><br>
+        </td>
+    </tr>
+</table>
+<br>
+<button onclick="window.location.href='/www/file/userfiles'">My files</button>
+<button onclick="window.location.href='/www/user/logout'">Logout</button>
+
+

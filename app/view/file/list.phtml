@@ -1,0 +1,32 @@
+<h3><?=$title;?></h3>
+<br>
+<?php
+if(!empty($files)) {
+?>
+<form method="post" name="userfiles_form" action="/www/file/updateAvatar">
+<table border="1" cellpadding="2" cellspacing="1" style="width: 700px;">
+    <tr><th>#</th><th>Filename</th><th>Size</th><th>Created</th><th>Avatar</th></tr>
+<?php
+     foreach ($files as $file) {
+          echo '<tr>
+                    <td style="text-align: center;">' . $file->getId() . '</td>
+                    <td style="text-align: right;">' . $file->filename . '</td>
+                    <td style="text-align: right;">' . $file->size . '</td>
+                    <td style="text-align: center; width: 200px;">' . $file->dt_create . '</td>
+                    <td style="text-align: center;"><input type="radio" name="isAvatar" onclick="document.userfiles_form.submit();" value="' . $file->getId() . '" ' . (($file->getId() == $avatar) ? 'checked' : '' ) . ' ></td>
+                </tr>';
+     }
+?>
+</table>
+</form>
+<?php
+} else {
+    echo '<h4>Files not found</h4>';
+}
+?>
+
+<br>
+<form method="post" enctype="multipart/form-data" action="/www/file/userfiles">
+    File upload: <input type="file" name="file"><br><br>
+    <input type="submit" value="Submit"><input type="button" onclick="window.location.href='/www/user/profile'" style="margin-left: 10px; width: 70px;" value="Back">
+</form>

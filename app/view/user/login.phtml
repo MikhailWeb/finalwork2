@@ -1,0 +1,6 @@
+<h3><?= $title; ?></h3>
+<form method="post" action="/www/user/login" style="margin-top: 20px;">
+    <label>Email as login:</label><input type="text" name="email" value="<?= $email; ?>" style="display: block; width: 300px; margin-bottom: 10px;">
+    <label>Password:</label><input type="password" name="password" value="<?= $password; ?>" style="display: block; width: 300px; margin-bottom: 10px;">
+    <input type="submit" value="Login" style="width: 100px; margin-right: 20px;"><a href="register">Register</a>
+</form>
