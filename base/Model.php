@@ -36,7 +36,7 @@ class Model
         $values = implode(',', $keyValues);
         $table = static::$table;
         $data = array_combine($keyValues, array_values($this->data));
-        $result = $db->exec("INSERT INTO $table ($fields) VALUES ($values)", __METHOD__, $data);
+        $result = $db->exec("INSERT INTO $table ($fields) VALUES ($values)", $data);
         $this->setId($db->lastInsertId());
 
         return $result;

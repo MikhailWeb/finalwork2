@@ -6,6 +6,12 @@ abstract class Controller
 {
     protected $view;
 
+    public function __construct()
+    {
+        $view = new View();
+        $this->setView($view->setTemplatePath(__DIR__ . '/../app/view'));
+    }
+
     public function setView(View $view)
     {
         $this->view = $view;

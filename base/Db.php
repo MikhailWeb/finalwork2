@@ -58,7 +58,7 @@ class Db
         return reset($data);
     }
 
-    public function exec(string $query, $_method, array $params = [])
+    public function exec(string $query, array $params = [])
     {
         $pdo = $this->getConnection();
         $prepared = $pdo->prepare($query);
