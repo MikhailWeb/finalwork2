@@ -1,50 +1,49 @@
 <?php
 namespace App\Model;
 
-use Base\Db;
 use Base\Model;
 
 class File extends Model
 {
-    protected $id;
-    protected $data;
-    protected $idField = 'id';
-    protected static $table = 'files';
+    protected $table = 'files';
+    protected $fillable = ['filename','user_id','size'];
 
-    public function __get($name)
+    public function upload()
     {
-        return $this->get($name);
-    }
-
-    public function save()
-    {
-        parent::save();
-        $path = $_SERVER['DOCUMENT_ROOT'].'/www/upload/user/' . $_SESSION['user_id'] . '/';
+        $path = $_SERVER['DOCUMENT_ROOT'].UPLOAD_DIR . $_SESSION['user_id'] . '/';
         if (!file_exists($path)) {
             mkdir($path);
         }
-        move_uploaded_file($_FILES['file']['tmp_name'], $path.$_FILES['file']['name']);
+
+        if (!empty($_FILES) && move_uploaded_file($_FILES['file']['tmp_name'], $path.$_FILES['file']['name'])) {
+            $file = new File(['filename' => $_FILES['file']['name'], 'user_id' => $_SESSION['user_id'], 'size' => $_FILES['file']['size']]);
+            $file->save();
+        } else {
+            throw new FileException('Не удалось загрузить файл.');
+        }
     }
 
-    public static function getFilesByUserId(int $userId)
+    public static function getFilesByUserId(int $userId, string $sort = 'desc')
     {
-        $db = Db::getInstance();
-        $table = static::$table;
-        $select = "SELECT * FROM $table WHERE user_id = $userId ORDER BY id DESC LIMIT 1000";
-        $data = $db->fetchAll($select, __METHOD__);
-
-        if(!$data) {
-            return  [];
+        if(!empty($userId)){
+            $files = self::where('user_id', $userId)->orderBy('filename', $sort)->get();
+        } else {
+            $files = self::orderBy('filename', $sort)->get();
         }
+        return $files;
 
-        $result = [];
-        foreach ($data as $elem) {
-            $model = new static();
-            $model->data = $elem;
-            $model->setId($elem['id']);
-            $result[] = $model;
-        }
-
-        return $result;
     }
+
+    public static function getFileById(int $id)
+    {
+       $file = self::where('id', $id)->get()[0]->getAttributes();
+       return $file;
+
+    }
+
+}
+
+class FileException extends \Exception
+{
+
 }

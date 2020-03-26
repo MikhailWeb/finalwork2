@@ -11,5 +11,4 @@ class Admin extends Model
     protected $idField = 'id';
     protected static $table;
 
-
 }

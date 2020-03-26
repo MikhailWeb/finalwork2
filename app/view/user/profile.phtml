@@ -4,7 +4,7 @@
         <td><img src="<?= $avatar; ?>" ></td>
         <td>
             <label>Username: </label><span><?= $username; ?></span><br>
-            <label>Day of birth: </label><span><?= (\DateTime::createFromFormat('Y-m-d', $birthday))->format('d.m.Y'); ?></span><br>
+            <label>Day of birth: </label><span><?= $birthday; ?></span><br>
             <label>Email: </label><span><?= $email; ?></span><br>
         </td>
     </tr>

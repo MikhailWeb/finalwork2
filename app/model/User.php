@@ -1,96 +1,68 @@
 <?php
 namespace App\Model;
 
-use Base\Db;
+use Illuminate\Database\QueryException;
 use Base\Model;
 
 class User extends Model
 {
-    protected $id;
-    protected $data;
-    protected $idField = 'id';
-    protected static $table = 'users';
+    protected $table = 'users';
+    protected $fillable = ['username', 'birthday', 'email', 'password', 'avatar'];
 
-    public function setName(string $name): self
+    public function create($userData)
     {
-        $this->set('username', $name);
-        return $this;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->set('email', $email);
-        return $this;
-    }
-
-    public function setBirthday(string $date): self
-    {
-        $this->set('birthday', $date);
-        return $this;
-    }
-
-    public function setAvatar(int $id): self
-    {
-        $this->set('avatar', $id);
-        return $this;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->set('pass', sha1($password));
-        return $this;
-    }
-
-    public function getName()
-    {
-        return $this->get('username');
-    }
-
-    public function getEmail()
-    {
-        return $this->get('email');
-    }
-
-    public function getBirthday()
-    {
-        return $this->get('birthday');
-    }
-
-    public function getPassword()
-    {
-        return $this->get('pass');
-    }
-
-    public function getAvatar()
-    {
-        return $this->get('avatar');
-    }
-
-    public function login(string $login, string $password)
-    {
-        $table = static::$table;
-        $select = "SELECT id FROM $table WHERE email = :login and pass = :password";
-        $userData = Db::getInstance()->fetchOne($select, __METHOD__, [':login' => $login, ':password' => sha1($password)]);
-
-        if ($userData == false) {
-            return false;
-        } else {
-            $_SESSION['user_id'] = $userData['id'];
-            return true;
+        $user = new self();
+        $user->email = $userData['email'];
+        $user->password = sha1($userData['password']);
+        $user->username = $userData['name'];
+        $dt = explode('.', $userData['birthday']);
+        $user->birthday = $dt[2].'-'.$dt[1].'-'.$dt[0];
+        try{
+            $user->save();
+            return $user;
+        } catch (QueryException $exception){
+            throw new UserException($exception->getMessage());
         }
     }
 
-    public function getAvatarUrl()
+    public function getOne($id)
     {
-        $file = new File();
-        $file->getById((int)$this->getAvatar());
-        return '/www/upload/user/' . $this->getId() . '/' . $file->filename;
+        $user = self::where('id', $id)->get()[0]->getAttributes();
+        return $user;
     }
 
-    public function updateUserAvatar(int $userId, int $fileId)
+    public function login($login, $password)
     {
-        $table = static::$table;
-        $update = "UPDATE $table SET avatar = $fileId WHERE id = $userId";
-        Db::getInstance()->exec($update, __METHOD__);
+        return  self::where([['email', '=', $login], ['password', '=' , sha1($password)]])->get()[0];
     }
+
+    public function getAvatarUrl($id)
+    {
+        if ($id == 0) {
+            return '0/default.PNG';
+        } else {
+            $avatar = File::getFileById($id);
+            return $avatar['user_id'] . '/' . $avatar['filename'];
+        }
+    }
+
+    public function checkUnique(string $field, string $value, int $id)
+    {
+        if ($id == 0) {
+            $count = self::where($field, $value)->count();
+        } else {
+            $count = self::where('id', '<>', $id)->where($field, '=', $value)->count();
+        }
+
+        if ($count > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
+class UserException extends \Exception
+{
+
 }

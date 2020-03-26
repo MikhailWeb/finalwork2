@@ -4,7 +4,8 @@ use Base\View;
 
 session_start();
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../base/init.php';
 
 $parts = explode('/', $_SERVER['REQUEST_URI']);
 $controllerName = '\App\Controller\\' . ucfirst($parts[2] ?? 'index');

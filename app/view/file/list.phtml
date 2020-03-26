@@ -9,11 +9,11 @@ if(!empty($files)) {
 <?php
      foreach ($files as $file) {
           echo '<tr>
-                    <td style="text-align: center;">' . $file->getId() . '</td>
+                    <td style="text-align: center;">' . $file->id . '</td>
                     <td style="text-align: right;">' . $file->filename . '</td>
                     <td style="text-align: right;">' . $file->size . '</td>
-                    <td style="text-align: center; width: 200px;">' . $file->dt_create . '</td>
-                    <td style="text-align: center;"><input type="radio" name="isAvatar" onclick="document.userfiles_form.submit();" value="' . $file->getId() . '" ' . (($file->getId() == $avatar) ? 'checked' : '' ) . ' ></td>
+                    <td style="text-align: center; width: 200px;">' . $file->created_at . '</td>
+                    <td style="text-align: center;"><input type="radio" name="isAvatar" onclick="document.userfiles_form.submit();" value="' . $file->id . '" ' . (($file->id == $avatar) ? 'checked' : '' ) . ' ></td>
                 </tr>';
      }
 ?>

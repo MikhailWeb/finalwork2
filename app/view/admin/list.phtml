@@ -3,16 +3,18 @@
 <?php
 if(!empty($users)) {
     ?>
-        <table border="1" cellpadding="2" cellspacing="1" style="width: 700px;">
-            <tr><th>#</th><th>Avatar</th><th>Username</th><th>Birthday / Age   [<a href="/www/admin/userlist?order_field=birthday&order=asc">ASC</a> | <a href="/www/admin/userlist?order_field=birthday&order=desc">DESC</a> ]</th><th>18+ ?</th></tr>
+        <table border="1" cellpadding="2" cellspacing="1" style="width: 900px;">
+            <tr><th>#</th><th>Avatar</th><th>Username</th><th>Email</th><th>Birthday / Age   [<a href="/www/admin/userlist?order_field=birthday&order=asc">ASC</a> | <a href="/www/admin/userlist?order_field=birthday&order=desc">DESC</a> ]</th><th>18+ ?</th><th></th></tr>
             <?php
             foreach ($users as $user) {
                 echo '<tr>
                     <td style="text-align: center;">' . $user['id'] . '</td>
                     <td style="text-align: center;"><img src="' . $user['avatar'] . '"></td>
                     <td style="text-align: right;">' . $user['name'] . '</td>
+                    <td style="text-align: center;">' . $user['email'] . '</td>
                     <td style="text-align: center;">' . $user['birthday'] . ' / ' . $user['age'] . '</td>
-                    <td style="text-align: center; width: 200px;">' . $user['adult'] . '</td>                    
+                    <td style="text-align: center; width: 200px;">' . $user['adult'] . '</td>   
+                    <td><a href="/www/admin/edit_user?id=' . $user['id'] . '">Edit</a></td>                 
                 </tr>';
             }
             ?>
@@ -22,3 +24,4 @@ if(!empty($users)) {
     echo '<h4>Users not found</h4>';
 }
 ?>
+<button onclick="window.location.href='/www/admin/add_user';" style="margin-top: 20px; width: 90px;">Add User</button>
