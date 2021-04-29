@@ -1,6 +1,6 @@
 {
   "require": {
-    "illuminate/database": "^5.8"
+    "illuminate/database": "^6.20"
   },
   "autoload": {
     "psr-4": {"App\\": "app/", "Base\\": "base/"}
